@@ -25,8 +25,6 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        UpdateCountJump();
-
 #if UNITY_EDITOR
         // moving left right
         directionX = Input.GetAxis("Horizontal");
@@ -47,26 +45,21 @@ public class PlayerController : MonoBehaviour
         _playerRb.velocity = new Vector2(_playerRb.velocity.x, _jumpForce);
     }
 
-    private void UpdateCountJump()
-    {
-        bool isGrounded = Physics2D.BoxCast(
-            _playerCollider.bounds.center,
-            _playerCollider.bounds.size,
-            0f,
-            Vector2.down,
-            .1f,
-            jumpableGround
-        );
-        // check if on ground
-        if (isGrounded)
-            _countJump = 0;
-    }
-
     private void OnCollisionEnter2D(Collision2D other)
     {
         if (other.gameObject.CompareTag("Enemy"))
         {
+            Debug.Log("???");
             _playerRb.velocity = new Vector2(_playerRb.velocity.x, _jumpForce);
+        }
+
+        Vector3 relativeVelocity = other.relativeVelocity;
+
+        // collison cam from below -> jump
+        if (other.gameObject.CompareTag("Terrain") && relativeVelocity.y > 0)
+        {
+            _countJump = 0;
+            // _playerRb.velocity = new Vector2(_playerRb.velocity.x, _jumpForce);
         }
     }
 }
