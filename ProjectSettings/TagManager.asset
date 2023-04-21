@@ -9,6 +9,7 @@ TagManager:
   - Room
   - Boundary
   - Enemy
+  - Terrain
   layers:
   - Default
   - TransparentFX

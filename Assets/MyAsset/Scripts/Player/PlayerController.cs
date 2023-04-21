@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour
 {
     public float directionX;
     private float _moveSpeed = 7.0f;
-    private float _jumpForce = 10.0f;
+    private float _jumpForce = 12.0f;
     private int _countJump = 0;
 
     [SerializeField]
@@ -49,17 +49,16 @@ public class PlayerController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Enemy"))
         {
-            Debug.Log("???");
             _playerRb.velocity = new Vector2(_playerRb.velocity.x, _jumpForce);
         }
 
         Vector3 relativeVelocity = other.relativeVelocity;
 
-        // collison cam from below -> jump
+        // collison came from below -> jump
         if (other.gameObject.CompareTag("Terrain") && relativeVelocity.y > 0)
         {
+            Debug.Log(relativeVelocity.y + " " + relativeVelocity.x);
             _countJump = 0;
-            // _playerRb.velocity = new Vector2(_playerRb.velocity.x, _jumpForce);
         }
     }
 }
