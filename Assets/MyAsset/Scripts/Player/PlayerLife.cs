@@ -11,16 +11,12 @@ public class PlayerLife : MonoBehaviour
     private Animator _playerAnim;
     private GameManager _gameManager;
 
-    // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         _playerAnim = GetComponent<Animator>();
         _playerRb = GetComponent<Rigidbody2D>();
         _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
-
-    // Update is called once per frame
-    void Update() { }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -28,6 +24,36 @@ public class PlayerLife : MonoBehaviour
         {
             Die();
         }
+    }
+
+    private void Die()
+    {
+        _lives--;
+        GameObject.Find("LivesCounter").GetComponent<TextMeshProUGUI>().SetText("Lives: " + _lives);
+        _playerRb.bodyType = RigidbodyType2D.Static;
+        _playerAnim.SetTrigger("death");
+    }
+
+    public void RestartLevel() // call in anim event
+    {
+        if (_lives == 0)
+        {
+            int highestScore = PlayerPrefs.GetInt("Score");
+            ItemsCollector itemsCollector = GetComponent<ItemsCollector>();
+            int currentScore = itemsCollector.GetScore();
+            if (highestScore < currentScore)
+            {
+                PlayerPrefs.SetInt("Score", currentScore);
+                PlayerPrefs.Save();
+            }
+
+            _gameManager.GameOver();
+            return;
+        }
+
+        transform.position = new Vector2(2.5f, 2.5f);
+        _playerAnim.SetInteger("state", 0);
+        _playerRb.bodyType = RigidbodyType2D.Dynamic;
     }
 
     private void OnCollisionEnter2D(Collision2D other)
@@ -44,35 +70,5 @@ public class PlayerLife : MonoBehaviour
                 }
             }
         }
-    }
-
-    private void Die()
-    {
-        _lives--;
-        GameObject.Find("LivesCounter").GetComponent<TextMeshProUGUI>().SetText("Lives: " + _lives);
-        _playerRb.bodyType = RigidbodyType2D.Static;
-        _playerAnim.SetTrigger("death");
-    }
-
-    public void RestartLevel() // call in anim
-    {
-        if (_lives == 0)
-        {
-            int highestScore = PlayerPrefs.GetInt("Score");
-            ItemsCollector itemsCollector = GetComponent<ItemsCollector>();
-            int currentScore = itemsCollector.GetScore();
-            if (highestScore < currentScore)
-            {
-                PlayerPrefs.SetInt("Score", currentScore);
-                PlayerPrefs.Save();
-            }
-
-            _gameManager.GameOver();
-            return;
-        }
-        Debug.Log("Restart");
-        transform.position = new Vector2(2.5f, 2.5f);
-        _playerAnim.SetInteger("state", 0);
-        _playerRb.bodyType = RigidbodyType2D.Dynamic;
     }
 }
