@@ -76,6 +76,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35d5871b563435c4ba6bd0f44297dd33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _roomInfo: {fileID: 11400000, guid: cad56f8276abbd24db2009a61ed2f214, type: 2}
   boundaryPoint: {fileID: 8811800888123196741, guid: 7fe897274bf6c154fa9b6ef73dcf9894, type: 3}
 --- !u!114 &7318009398484593957
 MonoBehaviour:
