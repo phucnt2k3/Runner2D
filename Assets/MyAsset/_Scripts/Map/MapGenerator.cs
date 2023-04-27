@@ -5,16 +5,6 @@ using UnityEngine;
 
 public class MapGenerator : MonoBehaviour
 {
-    enum IndexRoom
-    {
-        closed,
-        lr,
-        lrbot,
-        lrtop,
-        cross,
-        exit,
-    };
-
     public List<GameObject> prefabRooms;
 
     private int _col = 4;
@@ -27,39 +17,20 @@ public class MapGenerator : MonoBehaviour
 
     private BoundaryGenerator _boundaryGenerator;
 
-    // Start is called before the first frame update
-    void Start() { }
-
-    // Update is called once per frame
-    void Update() { }
-
     public void GenerateLevel(int level, string parentDir)
     {
         _boundaryGenerator = GameObject.Find("MapManager").GetComponent<BoundaryGenerator>();
-        if (level < 5) // easy mode
-        {
+        if (level < 3)
             _row = 2;
-            _col = 2;
-        }
+        else if (level < 5)
+            _row = 3;
         else
-        {
-            _row = level % 3 + 2;
-            _col = _row;
-        }
+            _row = 4;
+        _col = _row;
         _boundaryGenerator.Generate(_row, _col, parentDir);
         Init();
         FindSolutionPathRooms(0, 0, true);
         GenerateRooms(parentDir);
-    }
-
-    public int GetRow()
-    {
-        return _row;
-    }
-
-    public int GetCol()
-    {
-        return _col;
     }
 
     private void Init()
@@ -163,3 +134,13 @@ public class MapGenerator : MonoBehaviour
         room.transform.parent = GameObject.Find(parentDir).transform;
     }
 }
+
+public enum IndexRoom
+{
+    closed,
+    lr,
+    lrbot,
+    lrtop,
+    cross,
+    exit,
+};

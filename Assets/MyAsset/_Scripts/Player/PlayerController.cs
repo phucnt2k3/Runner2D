@@ -48,7 +48,10 @@ public class PlayerController : MonoBehaviour
         if (_countJump > 1)
             return;
         _countJump++;
-        _playerRb.velocity = new Vector2(_playerRb.velocity.x, _playerInfo.jumpForce);
+        if (_playerRb.bodyType != RigidbodyType2D.Static)
+        {
+            _playerRb.velocity = new Vector2(_playerRb.velocity.x, _playerInfo.jumpForce);
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D other)
