@@ -7,7 +7,6 @@ public class CupPressed : MonoBehaviour
 {
     private Animator _cupAnim;
     private bool _isFinished;
-
     private GameManager _gameManager;
 
     // Start is called before the first frame update
@@ -18,9 +17,6 @@ public class CupPressed : MonoBehaviour
         _cupAnim = GetComponent<Animator>();
         _cupAnim.SetTrigger("Begin");
     }
-
-    // Update is called once per frame
-    void Update() { }
 
     private void OnCollisionEnter2D(Collision2D other)
     {
