@@ -4,7 +4,7 @@ using UnityEngine;
 
 [CreateAssetMenu(fileName = "PlayerInfo", menuName = "ScriptableObjects/PlayerInfo", order = 0)]
 public class PlayerInfo : ScriptableObject {
-    public string namePLayer;
+    public string namePlayer;
     public float jumpForce;
     public float moveSpeed;
 }

@@ -11,15 +11,22 @@ public class GameManager : MonoBehaviour
     private MapGenerator _mapGenerator;
     public GameObject rotateLevel;
 
+    [SerializeField]
+    private GameObject _gamePlayUI;
+
+    [SerializeField]
+    private GameObject _gameOverUI;
+
+    [SerializeField]
+    private GameObject _gameStartUI;
+
     // Start is called before the first frame update
     void Start()
     {
         _player = GameObject.Find("Player");
-        NextLevel();
+        _player.SetActive(false);
+        StartGame();
     }
-
-    // Update is called once per frame
-    void Update() { }
 
     public void NextLevel()
     {
@@ -31,7 +38,8 @@ public class GameManager : MonoBehaviour
 
         _mapGenerator = GameObject.Find(newLevel.name + "/MapManager").GetComponent<MapGenerator>();
         _mapGenerator.GenerateLevel(currentLevel, newLevel.name + "ParentObject");
-
+        
+        _player.SetActive(true);
         _player.transform.position = new Vector2(2.5f, 2.5f);
         GameObject
             .Find("CurrentLevel")
@@ -42,6 +50,21 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
-        SceneManager.LoadScene(1);
+        _gamePlayUI.SetActive(false);
+        _gameOverUI.SetActive(true);
+    }
+
+    public void StartGame()
+    {
+        _gamePlayUI.SetActive(false);
+        _gameOverUI.SetActive(false);
+        _gameStartUI.SetActive(true);
+    }
+
+    public void PlayInGame()
+    {
+        _gamePlayUI.SetActive(true);
+        _gameStartUI.SetActive(false);
+        NextLevel();
     }
 }

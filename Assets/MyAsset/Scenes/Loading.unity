@@ -440,7 +440,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _slider: {fileID: 267041560}
-  _sceneIndex: 2
+  _sceneIndex: 0
 --- !u!4 &491982266
 Transform:
   m_ObjectHideFlags: 0

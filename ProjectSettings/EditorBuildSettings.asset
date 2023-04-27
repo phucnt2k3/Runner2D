@@ -7,14 +7,14 @@ EditorBuildSettings:
   m_Scenes:
   - enabled: 0
     path: 
-    guid: 2cda990e2423bbf4892e6590ba056729
+    guid: 00000000000000000000000000000000
   - enabled: 1
     path: Assets/MyAsset/Scenes/RotateLevel.unity
     guid: 2029ea4309303084d8fd52964cc2f50d
-  - enabled: 1
+  - enabled: 0
     path: Assets/MyAsset/Scenes/GameOver.unity
     guid: 1ab2becee6bd18842a6ac7444ac7a6be
-  - enabled: 1
+  - enabled: 0
     path: Assets/MyAsset/Scenes/StartMenu.unity
     guid: 7108b7b3df955314fbd66a0e28e8e29e
   - enabled: 1
