@@ -5,21 +5,21 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField]
+    private PlayerInfo _playerInfo;
     public float directionX;
-    private float _moveSpeed = 7.0f;
-    private float _jumpForce = 12.0f;
     private int _countJump = 0;
 
     [SerializeField]
     private LayerMask jumpableGround;
     private Rigidbody2D _playerRb;
-    private Collider2D _playerCollider;
-    public Joystick joystick;
+
+    [SerializeField]
+    private Joystick _joystick;
 
     private void Awake()
     {
         _playerRb = GetComponent<Rigidbody2D>();
-        _playerCollider = GetComponent<Collider2D>();
     }
 
     // Update is called once per frame
@@ -32,25 +32,30 @@ public class PlayerController : MonoBehaviour
         if (Input.GetButtonDown("Jump"))
             Jump();
 #else
-        directionX = joystick.Horizontal;
+        directionX = _joystick.Horizontal;
 #endif
         if (_playerRb.bodyType != RigidbodyType2D.Static)
-            _playerRb.velocity = new Vector2(directionX * _moveSpeed, _playerRb.velocity.y);
+        {
+            _playerRb.velocity = new Vector2(
+                directionX * _playerInfo.moveSpeed,
+                _playerRb.velocity.y
+            );
+        }
     }
 
-    public void Jump()
+    public void Jump() // call in jump button event
     {
         if (_countJump > 1)
             return;
         _countJump++;
-        _playerRb.velocity = new Vector2(_playerRb.velocity.x, _jumpForce);
+        _playerRb.velocity = new Vector2(_playerRb.velocity.x, _playerInfo.jumpForce);
     }
 
     private void OnCollisionEnter2D(Collision2D other)
     {
         if (other.gameObject.CompareTag("Enemy"))
         {
-            _playerRb.velocity = new Vector2(_playerRb.velocity.x, _jumpForce);
+            _playerRb.velocity = new Vector2(_playerRb.velocity.x, _playerInfo.jumpForce);
         }
 
         Vector3 relativeVelocity = other.relativeVelocity;
