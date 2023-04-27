@@ -8,13 +8,11 @@ public class EnemyController : MonoBehaviour
     private float _lastTime;
     private bool _isHit = false;
     private Rigidbody2D _enemyRb;
-    private Collider2D _enemyCollider;
 
     void Awake()
     {
         directionX = 1;
         _enemyRb = GetComponent<Rigidbody2D>();
-        _enemyCollider = GetComponent<Collider2D>();
     }
 
     // Update is called once per frame

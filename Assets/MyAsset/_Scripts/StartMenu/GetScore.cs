@@ -8,6 +8,6 @@ public class GetScore : MonoBehaviour
     void Awake()
     {
         int highestScore = PlayerPrefs.GetInt("Score");
-        GetComponent<TextMeshProUGUI>().SetText("Highest Score: " + highestScore);
+        GetComponent<TextMeshProUGUI>().SetText("Highest Scores: " + highestScore);
     }
 }

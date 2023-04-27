@@ -6,14 +6,12 @@ public class FollowPlayer : MonoBehaviour
 {
     private Transform _playerTransform;
     private Vector3 _updatePosition;
-    private PlayerController _playerController;
 
     [SerializeField] private Vector3 _offSet;
 
     void Awake()
     {
         _playerTransform = GameObject.Find("Player").transform;
-        _playerController = GameObject.Find("Player").GetComponent<PlayerController>();
     }
 
     // Update is called once per frame

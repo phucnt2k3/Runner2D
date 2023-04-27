@@ -4,13 +4,6 @@ using UnityEngine;
 
 public class EnemyAnimator : MonoBehaviour
 {
-    private enum MovementState
-    {
-        Idle,
-        Run,
-        Hit,
-    }
-
     private Animator _enemyAnim;
     private SpriteRenderer _enemyRd;
     private EnemyController _enemyController;
@@ -54,4 +47,11 @@ public class EnemyAnimator : MonoBehaviour
             _enemyAnim.SetInteger("state", 2);
         }
     }
+}
+
+public enum MovementState
+{
+    Idle,
+    Run,
+    Hit,
 }

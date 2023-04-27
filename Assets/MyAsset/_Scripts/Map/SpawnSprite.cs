@@ -30,7 +30,4 @@ public class SpawnSprite : MonoBehaviour
             myObject.transform.parent = GameObject.Find(levelName + "/ParentObject").transform;
         }
     }
-
-    // Update is called once per frame
-    void Update() { }
 }
