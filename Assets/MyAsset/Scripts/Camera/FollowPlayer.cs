@@ -8,6 +8,8 @@ public class FollowPlayer : MonoBehaviour
     private Vector3 _updatePosition;
     private PlayerController _playerController;
 
+    [SerializeField] private Vector3 _offSet;
+
     void Awake()
     {
         _playerTransform = GameObject.Find("Player").transform;
@@ -21,7 +23,7 @@ public class FollowPlayer : MonoBehaviour
             _playerTransform.position.x,
             _playerTransform.position.y,
             transform.position.z
-        );
+        ) + _offSet;
     }
 
     private void LateUpdate()

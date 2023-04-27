@@ -5,7 +5,7 @@ using TMPro;
 
 public class GetScore : MonoBehaviour
 {
-    void Awale()
+    void Awake()
     {
         int highestScore = PlayerPrefs.GetInt("Score");
         GetComponent<TextMeshProUGUI>().SetText("Highest Score: " + highestScore);

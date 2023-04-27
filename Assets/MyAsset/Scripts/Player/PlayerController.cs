@@ -34,7 +34,8 @@ public class PlayerController : MonoBehaviour
 #else
         directionX = joystick.Horizontal;
 #endif
-        _playerRb.velocity = new Vector2(directionX * _moveSpeed, _playerRb.velocity.y);
+        if (_playerRb.bodyType != RigidbodyType2D.Static)
+            _playerRb.velocity = new Vector2(directionX * _moveSpeed, _playerRb.velocity.y);
     }
 
     public void Jump()
@@ -57,7 +58,6 @@ public class PlayerController : MonoBehaviour
         // collison came from below -> jump
         if (other.gameObject.CompareTag("Terrain") && relativeVelocity.y > 0)
         {
-            Debug.Log(relativeVelocity.y + " " + relativeVelocity.x);
             _countJump = 0;
         }
     }
