@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
+        _countJump = 0;
         _playerRb = GetComponent<Rigidbody2D>();
     }
 

@@ -39,7 +39,7 @@ public class GameManager : MonoBehaviour
         _mapGenerator = GameObject.Find(newLevel.name + "/MapManager").GetComponent<MapGenerator>();
         _mapGenerator.GenerateLevel(currentLevel, newLevel.name + "ParentObject");
         
-        _player.SetActive(true);
+        _player.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
         _player.transform.position = new Vector2(2.5f, 2.5f);
         GameObject
             .Find("CurrentLevel")
@@ -50,12 +50,14 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
+        Destroy(GameObject.Find("Level " + (currentLevel - 1)));
         _gamePlayUI.SetActive(false);
         _gameOverUI.SetActive(true);
     }
 
     public void StartGame()
     {
+        _player.SetActive(false);
         _gamePlayUI.SetActive(false);
         _gameOverUI.SetActive(false);
         _gameStartUI.SetActive(true);
@@ -63,6 +65,9 @@ public class GameManager : MonoBehaviour
 
     public void PlayInGame()
     {
+        _player.SetActive(true);
+        _player.GetComponent<PlayerLife>().SetLives(3);
+        currentLevel = 1;
         _gamePlayUI.SetActive(true);
         _gameStartUI.SetActive(false);
         NextLevel();

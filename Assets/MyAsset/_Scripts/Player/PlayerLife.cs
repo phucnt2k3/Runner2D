@@ -11,12 +11,19 @@ public class PlayerLife : MonoBehaviour
     private Rigidbody2D _playerRb;
     private Animator _playerAnim;
     private GameManager _gameManager;
+    [SerializeField] private TextMeshProUGUI _livesText;
 
     void Awake()
     {
         _playerAnim = GetComponent<Animator>();
         _playerRb = GetComponent<Rigidbody2D>();
         _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+    }
+
+    public void SetLives(int lives)
+    {
+        _lives = lives;
+        _livesText.SetText("Lives: " + _lives);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -29,8 +36,7 @@ public class PlayerLife : MonoBehaviour
 
     private void Die()
     {
-        _lives--;
-        GameObject.Find("LivesCounter").GetComponent<TextMeshProUGUI>().SetText("Lives: " + _lives);
+        SetLives(_lives - 1);
         _playerRb.bodyType = RigidbodyType2D.Static;
         _playerAnim.SetTrigger("death");
     }
