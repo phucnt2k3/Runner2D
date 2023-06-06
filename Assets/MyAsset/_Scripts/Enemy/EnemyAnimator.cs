@@ -2,17 +2,45 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyAnimator : MonoBehaviour
+public class EnemyAnimator : EnemyAbstract
 {
-    private Animator _enemyAnim;
-    private SpriteRenderer _enemyRd;
-    private EnemyController _enemyController;
-
-    private void Awake()
+    [Header("Enemy Animator")]
+    [SerializeField] private float directionX = 0f;
+    [SerializeField] private Animator enemyAnim;
+    [SerializeField] private SpriteRenderer enemyRd;
+    private enum MovementState
     {
-        _enemyAnim = GetComponent<Animator>();
-        _enemyRd = GetComponent<SpriteRenderer>();
-        _enemyController = GetComponent<EnemyController>();
+        Idle,
+        Run,
+        Hit,
+    }
+
+    protected override void LoadComponents()
+    {
+        base.LoadComponents();
+        LoadAnimator();
+        LoadRenderer();
+    }
+
+    protected virtual void LoadAnimator()
+    {
+        if (enemyAnim != null) return;
+
+        enemyAnim = GetComponent<Animator>();
+        Debug.LogWarning(transform.name + ": Load Animator", gameObject);
+    }
+
+    protected virtual void LoadRenderer()
+    {
+        if (enemyRd != null) return;
+
+        enemyRd = transform.GetComponent<SpriteRenderer>();
+        Debug.LogWarning(transform.name + ": Load SpriteRenderer", gameObject);
+    }
+
+    private void Update()
+    {
+        directionX = enemyCtrl.EnemyMove.DirectionX;
     }
 
     private void LateUpdate()
@@ -24,34 +52,19 @@ public class EnemyAnimator : MonoBehaviour
     {
         MovementState state;
 
-        if (_enemyController.directionX > 0f)
+        if (directionX > 0f)
         {
             state = MovementState.Run;
-            _enemyRd.flipX = false;
+            enemyRd.flipX = false;
         }
-        else if (_enemyController.directionX < 0f)
+        else if (directionX < 0f)
         {
             state = MovementState.Run;
-            _enemyRd.flipX = true;
+            enemyRd.flipX = true;
         }
         else
             state = MovementState.Idle;
 
-        _enemyAnim.SetInteger("state", (int)state);
+        enemyAnim.SetInteger("state", (int)state);
     }
-
-    private void OnCollisionEnter2D(Collision2D other)
-    {
-        if (other.gameObject.CompareTag("Player"))
-        {
-            _enemyAnim.SetInteger("state", 2);
-        }
-    }
-}
-
-public enum MovementState
-{
-    Idle,
-    Run,
-    Hit,
 }

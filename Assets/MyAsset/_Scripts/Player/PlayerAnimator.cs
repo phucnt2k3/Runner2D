@@ -2,8 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerAnimator : MonoBehaviour
+public class PlayerAnimator : PlayerAbstract
 {
+    [Header("Player Animator")]
+    [SerializeField] private float directionX = 0f;
+    [SerializeField] private float velocityY = 0f;
+    [SerializeField] private Animator playerAnim;
+    [SerializeField] private SpriteRenderer playerRd;
     private enum MovementState
     {
         Idle,
@@ -13,20 +18,37 @@ public class PlayerAnimator : MonoBehaviour
         DoubleJump,
     }
 
-    private PlayerController _playerController;
-    private Animator _playerAnim;
-    private SpriteRenderer _playerRd;
-    private Rigidbody2D _playerRb;
-
-    private void Awake()
+    protected override void LoadComponents()
     {
-        _playerController = GetComponent<PlayerController>();
-        _playerAnim = GetComponent<Animator>();
-        _playerRd = GetComponent<SpriteRenderer>();
-        _playerRb = GetComponent<Rigidbody2D>();
+        base.LoadComponents();
+        LoadAnimator();
+        LoadRenderer();
     }
 
-    private void LateUpdate()
+    protected virtual void LoadAnimator()
+    {
+        if (playerAnim != null) return;
+
+        playerAnim = GetComponent<Animator>();
+        Debug.LogWarning(transform.name + ": Load Animator", gameObject);
+    }
+
+    protected virtual void LoadRenderer()
+    {
+        if (playerRd != null) return;
+
+        playerRd = transform.GetComponent<SpriteRenderer>();
+        Debug.LogWarning(transform.name + ": Load SpriteRenderer", gameObject);
+    }
+
+
+    private void Update()
+    {
+        directionX = playerCtrl.PlayerMove.DirectionX;
+        velocityY = playerCtrl.PlayerRb.velocity.y;
+    }
+
+    private void FixedUpdate()
     {
         ChangeStateAnimation();
     }
@@ -35,24 +57,21 @@ public class PlayerAnimator : MonoBehaviour
     {
         MovementState state;
 
-        if (_playerController.directionX > 0f)
+        if (directionX > 0f)
         {
             state = MovementState.Run;
-            _playerRd.flipX = false;
+            playerRd.flipX = false;
         }
-        else if (_playerController.directionX < 0f)
+        else if (directionX < 0f)
         {
             state = MovementState.Run;
-            _playerRd.flipX = true;
+            playerRd.flipX = true;
         }
-        else
-            state = MovementState.Idle;
+        else state = MovementState.Idle;
 
-        if (_playerRb.velocity.y > .1f)
-            state = MovementState.Jump;
-        else if (_playerRb.velocity.y < -.1f)
-            state = MovementState.Fall;
+        if (velocityY > .1f) state = MovementState.Jump;
+        else if (velocityY < -.1f) state = MovementState.Fall;
 
-        _playerAnim.SetInteger("state", (int)state);
+        playerAnim.SetInteger("state", (int)state);
     }
 }

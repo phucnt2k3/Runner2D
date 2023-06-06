@@ -2,30 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FollowPlayer : MonoBehaviour
+public class FollowPlayer : FollowTarget
 {
-    private Transform _playerTransform;
-    private Vector3 _updatePosition;
-
-    [SerializeField] private Vector3 _offSet;
-
-    void Awake()
+    protected override void LoadComponents()
     {
-        _playerTransform = GameObject.Find("Player").transform;
+        base.LoadComponents();
+        LoadPlayer();
     }
 
-    // Update is called once per frame
-    void Update()
+    protected virtual void LoadPlayer()
     {
-        _updatePosition = new Vector3(
-            _playerTransform.position.x,
-            _playerTransform.position.y,
-            transform.position.z
-        ) + _offSet;
-    }
+        if (this._target != null) return;
 
-    private void LateUpdate()
-    {
-        transform.position = _updatePosition;
+        this._target = GameManager.Instance.Player;
+        Debug.LogWarning(transform.name + ": Load Player Transform", gameObject);
     }
 }
