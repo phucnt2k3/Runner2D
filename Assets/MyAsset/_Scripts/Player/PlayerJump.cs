@@ -57,8 +57,9 @@ public class PlayerJump : ObjMovement
 
     public virtual void JumpSingle()
     {
-        if (playerCtrl.PlayerRb.bodyType != RigidbodyType2D.Static)
-            playerCtrl.PlayerRb.velocity = new Vector2(playerCtrl.PlayerRb.velocity.x, jumpForce);
+        if (playerCtrl.PlayerRb.bodyType == RigidbodyType2D.Static) return;
+        
+        playerCtrl.PlayerRb.velocity = new Vector2(playerCtrl.PlayerRb.velocity.x, jumpForce);
     }
 
     public virtual void SetJumpCount(int jumpCount) { countJump = jumpCount; }

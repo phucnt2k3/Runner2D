@@ -12,9 +12,9 @@ public class FollowPlayer : FollowTarget
 
     protected virtual void LoadPlayer()
     {
-        if (this._target != null) return;
+        if (this.target != null) return;
 
-        this._target = GameManager.Instance.Player;
+        this.target = GameObject.Find("Player").transform;
         Debug.LogWarning(transform.name + ": Load Player Transform", gameObject);
     }
 }

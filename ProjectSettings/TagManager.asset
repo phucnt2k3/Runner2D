@@ -10,6 +10,7 @@ TagManager:
   - Boundary
   - Enemy
   - Terrain
+  - Fruit
   layers:
   - Default
   - TransparentFX

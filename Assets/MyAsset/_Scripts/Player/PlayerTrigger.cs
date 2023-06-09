@@ -14,12 +14,20 @@ public class PlayerTrigger : PlayerAbstract
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.CompareTag("Enemy"))
-            playerCtrl.PlayerJump.JumpSingle();
-
         Vector3 relativeVelocity = other.relativeVelocity;
         // collison came from below -> jump
         if (other.gameObject.CompareTag("Terrain") && relativeVelocity.y > 0)
             playerCtrl.PlayerJump.SetJumpCount(0);
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        var fruiTouchable = other.gameObject.GetComponent<FruitTouchable>();
+        if(fruiTouchable != null) playerCtrl.FruitCollector.SetCollectedFruits(1);
+
+        if (!other.gameObject.CompareTag("Enemy")) return;
+
+        playerCtrl.PlayerJump.JumpSingle();
+        playerCtrl.DamageSender.Send(other.gameObject.transform);
     }
 }

@@ -11,75 +11,122 @@ public class GameManager : MineBehaviour
     [SerializeField] private Transform _player;
     public Transform Player => _player;
 
-    public int currentLevel = 1;
-    private MapGenerator _mapGenerator;
-    public GameObject rotateLevel;
+    [SerializeField] private int _currentLevel = 0;
+    public int CurrentLevel => _currentLevel;
 
-    [SerializeField]
-    private GameObject _gamePlayUI;
-
-    [SerializeField]
-    private GameObject _gameOverUI;
-
-    [SerializeField]
-    private GameObject _gameStartUI;
+    [SerializeField] private Transform _gamePlayUI;
+    [SerializeField] private Transform _gameOverUI;
+    [SerializeField] private Transform _gameStartUI;
 
     private void Awake()
     {
         if (GameManager.Instance != null) Debug.LogError(transform.name + ": invalid 2 instance", gameObject);
         instance = this;
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        _player = GameObject.Find("Player").transform;
+        _gamePlayUI.gameObject.SetActive(false);
+        _gameOverUI.gameObject.SetActive(false);
+        _gameStartUI.gameObject.SetActive(false);
         _player.gameObject.SetActive(false);
-        StartGame();
     }
 
-    public void NextLevel()
+    private void Start()
     {
-        if (currentLevel > 1)
-            Destroy(GameObject.Find("Level " + (currentLevel - 1)));
+        ShowPopUpStartGame();
+    }
 
-        GameObject newLevel = Instantiate(rotateLevel, new Vector2(0, 0), Quaternion.identity);
-        newLevel.name = "Level " + currentLevel;
+    protected override void LoadComponents()
+    {
+        base.LoadComponents();
+        LoadPlayer();
+        LoadGamePlayUI();
+        LoadGameOverUI();
+        LoadGameStartUI();
+    }
 
-        _mapGenerator = GameObject.Find(newLevel.name + "/MapManager").GetComponent<MapGenerator>();
-        _mapGenerator.GenerateLevel(currentLevel, newLevel.name + "ParentObject");
-        
+    protected virtual void LoadPlayer()
+    {
+        if (_player != null) return;
+
+        _player = GameObject.Find("Player").transform;
+        Debug.LogWarning(transform.name + ": Load Player", gameObject);
+    }
+
+    protected virtual void LoadGamePlayUI()
+    {
+        if (_gamePlayUI != null) return;
+
+        _gamePlayUI = GameObject.Find("GamePlayUI").transform;
+        Debug.LogWarning(transform.name + ": Load GamePlayUI", gameObject);
+    }
+
+    protected virtual void LoadGameOverUI()
+    {
+        if (_gameOverUI != null) return;
+
+        _gameOverUI = GameObject.Find("GameOverUI").transform;
+        Debug.LogWarning(transform.name + ": Load GameOverUI", gameObject);
+    }
+
+    protected virtual void LoadGameStartUI()
+    {
+        if (_gameStartUI != null) return;
+
+        _gameStartUI = GameObject.Find("GameStartUI").transform;
+        Debug.LogWarning(transform.name + ": Load GameStartUI", gameObject);
+    }
+
+    private void OnNextLevel()
+    {
+        PrePairMap();
+
+        _player.gameObject.SetActive(true);
         _player.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
         _player.transform.position = new Vector2(2.5f, 2.5f);
-        GameObject
-            .Find("CurrentLevel")
-            .GetComponent<TextMeshProUGUI>()
-            .SetText("Level: " + currentLevel);
-        currentLevel++;
+        
+        _currentLevel++;
     }
 
-    public void GameOver()
+    protected virtual void PrePairMap()
     {
-        Destroy(GameObject.Find("Level " + (currentLevel - 1)));
-        _gamePlayUI.SetActive(false);
-        _gameOverUI.SetActive(true);
+        FruitSpawner.Instance.DespawnAll();
+        RoomSpawner.Instance.DespawnAll();
+        TileSpawner.Instance.DespawnAll();
+
+        MapGenerator.Instance.RoomGenerator.GenerateLevel(_currentLevel);
+
+        int row = MapGenerator.Instance.RoomGenerator.Row;
+        int col = MapGenerator.Instance.RoomGenerator.Col;
+        MapGenerator.Instance.BoundaryGenerator.GenerateBoundaries(row * 8, col * 12);
+    }
+
+    public void OnWinGame()
+    {
+        OnNextLevel();
+    }
+
+    public void OnLoseGame()
+    {
+        _currentLevel = 0;
+        _player.gameObject.SetActive(false);
+        _gamePlayUI.gameObject.SetActive(false);
+        _gameOverUI.gameObject.SetActive(true);
+    }
+
+    public void ShowPopUpStartGame()
+    {
+        _gameOverUI.gameObject.SetActive(false);
+        _gameStartUI.gameObject.SetActive(true);
     }
 
     public void StartGame()
     {
-        _player.gameObject.SetActive(false);
-        _gamePlayUI.SetActive(false);
-        _gameOverUI.SetActive(false);
-        _gameStartUI.SetActive(true);
+        OnNextLevel();
+        _gamePlayUI.gameObject.SetActive(true);
+        _gameStartUI.gameObject.SetActive(false);
     }
+}
 
-    public void PlayInGame()
-    {
-        _player.gameObject.SetActive(true);
-        // _player.GetComponent<PlayerLife>().SetLives(3);
-        currentLevel = 1;
-        _gamePlayUI.SetActive(true);
-        _gameStartUI.SetActive(false);
-        NextLevel();
-    }
+public enum GameState
+{
+    OnWinGame,
+    OnLoseGame,
 }

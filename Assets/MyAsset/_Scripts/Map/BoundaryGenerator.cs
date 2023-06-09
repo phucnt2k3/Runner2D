@@ -2,35 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BoundaryGenerator : MonoBehaviour 
+public class BoundaryGenerator : MineBehaviour 
 {
-    [SerializeField] private RoomInfo _roomInfo;
-    public GameObject boundaryPoint;
-
-    public void Generate(int row, int col, string parentDir)
+    public virtual void GenerateBoundaries(int row, int col)
     {
-        for (int i = 0; i < row * _roomInfo.rows; ++i)
+        for (int i = 0; i < row; ++i)
         {
-            GenerateAndSetParent(-0.5f, 0.5f + i, parentDir);
+            Vector3 spawnPos = new Vector3(0f, 1f + i, 0f);
+            TileSpawner.Instance.Spawn(TileSpawner.boundaryName, spawnPos, Quaternion.identity);
 
-            GenerateAndSetParent(-0.5f + col * _roomInfo.cols + 1, 0.5f + i, parentDir);
+            spawnPos = new Vector3(1f + col, 1f + i, 0);
+            TileSpawner.Instance.Spawn(TileSpawner.boundaryName, spawnPos, Quaternion.identity);
         }
 
-        for (int i = 0; i < col * _roomInfo.cols + 2; ++i)
+        for (int i = 0; i < col + 2; ++i)
         {
-            GenerateAndSetParent(-0.5f + i, -0.5f, parentDir);
+            Vector3 spawnPos = new Vector3(0f + i, 0f, 0);
+            TileSpawner.Instance.Spawn(TileSpawner.boundaryName, spawnPos, Quaternion.identity);
 
-            GenerateAndSetParent(-0.5f + i, -0.5f + row * _roomInfo.rows + 1, parentDir);
+            spawnPos = new Vector3(0f + i, 1f + row, 0);
+            TileSpawner.Instance.Spawn(TileSpawner.boundaryName, spawnPos, Quaternion.identity);
         }
-    }
-
-    private void GenerateAndSetParent(float xPos, float yPos, string parentDir)
-    {
-        GameObject myObject = Instantiate(
-            boundaryPoint,
-            new Vector2(xPos, yPos),
-            boundaryPoint.transform.rotation
-        );
-        myObject.transform.parent = GameObject.Find(parentDir).transform;
     }
 }
