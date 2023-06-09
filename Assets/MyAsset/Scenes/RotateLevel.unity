@@ -4552,7 +4552,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 153005122}
-  speed: 0.1
+  speed: 2
 --- !u!1 &1265569755
 GameObject:
   m_ObjectHideFlags: 0
@@ -6300,6 +6300,53 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2e095629055a3244481b9d230d3069f6, type: 3}
+--- !u!1 &1969926502
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1969926503}
+  - component: {fileID: 1969926504}
+  m_Layer: 0
+  m_Name: EnemyDetectPlayer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1969926503
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1969926502}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7639282869731624526}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1969926504
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1969926502}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 179cce6c3ca464f42ba7e2b42402fb77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 153005122}
+  radius: 3
+  enemyCtrl: {fileID: 7639282869731624513}
 --- !u!1 &2019530607
 GameObject:
   m_ObjectHideFlags: 0
@@ -7657,7 +7704,7 @@ MonoBehaviour:
   model: {fileID: 7639282870610892410}
   enemyInfo: {fileID: 11400000, guid: 122bf7874d0f742499ed4f03ad72652f, type: 2}
   enemyRb: {fileID: 7639282869731624527}
-  enemyMove: {fileID: 7639282871144048289}
+  enemyMove: {fileID: 7639282871144048292}
   enemyDespawn: {fileID: 7417925151218078014}
   enemyDamageSender: {fileID: 7417925152926250380}
 --- !u!1 &7639282869731624514
@@ -7680,7 +7727,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7639282869731624526
 Transform:
   m_ObjectHideFlags: 0
@@ -7698,6 +7745,7 @@ Transform:
   - {fileID: 4964214650544737931}
   - {fileID: 4273179428479996733}
   - {fileID: 1780630170870332487}
+  - {fileID: 1969926503}
   m_Father: {fileID: 0}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -7850,23 +7898,6 @@ MonoBehaviour:
   directionX: 0
   enemyAnim: {fileID: 7639282870610892408}
   enemyRd: {fileID: 7639282870610892359}
---- !u!114 &7639282871144048289
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7639282871144048291}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ca3330aed1d6fa469b631d49c938b87, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enemyCtrl: {fileID: 7639282869731624513}
-  speed: 11
-  directionX: 1
-  reverseTimer: 0
-  reverseTime: 2
 --- !u!4 &7639282871144048290
 Transform:
   m_ObjectHideFlags: 0
@@ -7891,7 +7922,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7639282871144048290}
-  - component: {fileID: 7639282871144048289}
+  - component: {fileID: 7639282871144048292}
   m_Layer: 0
   m_Name: EnemyMove
   m_TagString: Untagged
@@ -7899,6 +7930,23 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &7639282871144048292
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7639282871144048291}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ca3330aed1d6fa469b631d49c938b87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyCtrl: {fileID: 7639282869731624513}
+  speed: 11
+  directionX: 1
+  reverseTimer: 0
+  reverseTime: 2
 --- !u!212 &7928706847713129679
 SpriteRenderer:
   m_ObjectHideFlags: 0
