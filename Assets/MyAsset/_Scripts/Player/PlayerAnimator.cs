@@ -7,6 +7,7 @@ public class PlayerAnimator : PlayerAbstract
     [Header("Player Animator")]
     [SerializeField] private float directionX = 0f;
     [SerializeField] private float velocityY = 0f;
+    [SerializeField] private bool isCrouch = false;
     [SerializeField] private Animator playerAnim;
     [SerializeField] private SpriteRenderer playerRd;
     private enum MovementState
@@ -15,7 +16,6 @@ public class PlayerAnimator : PlayerAbstract
         Run,
         Jump,
         Fall,
-        DoubleJump,
     }
 
     protected override void LoadComponents()
@@ -46,6 +46,11 @@ public class PlayerAnimator : PlayerAbstract
     {
         directionX = playerCtrl.PlayerMove.DirectionX;
         velocityY = playerCtrl.PlayerRb.velocity.y;
+        if(isCrouch)
+        {
+            velocityY = 0f;
+            directionX = 0f; 
+        }
     }
 
     private void FixedUpdate()

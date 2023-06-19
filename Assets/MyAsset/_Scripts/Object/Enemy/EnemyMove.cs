@@ -38,6 +38,7 @@ public class EnemyMove : ObjMovement
 
     protected virtual void GetDirection()
     {
+
         if (reverseTimer > reverseTime)
         {
             reverseTimer = 0;

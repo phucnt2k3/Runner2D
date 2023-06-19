@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerTrigger : PlayerAbstract
 {
+
     protected override void LoadPlayerCtrl()
     {
         if (playerCtrl != null) return;
@@ -23,7 +25,7 @@ public class PlayerTrigger : PlayerAbstract
     private void OnTriggerEnter2D(Collider2D other)
     {
         var fruiTouchable = other.gameObject.GetComponent<FruitTouchable>();
-        if(fruiTouchable != null) playerCtrl.FruitCollector.SetCollectedFruits(1);
+        if(fruiTouchable != null) playerCtrl.FruitCollector.Collect(1);
 
         if (!other.gameObject.CompareTag("Enemy")) return;
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-[RequireComponent(typeof(BoxCollider2D))]
+[RequireComponent(typeof(CapsuleCollider2D))]
 public class PlayerCtrl : ObjCtrl
 {
     [Header("Player Ctrl")]
@@ -28,10 +28,10 @@ public class PlayerCtrl : ObjCtrl
         LoadRigidBody();
         LoadPlayerMove();
         LoadPlayerJump();
+        LoadPlayerConfig();
         LoadPlayerDamageSender();
         LoadPlayerDamageReceiver();
         LoadPlayerFruitCollector();
-        LoadPlayerConfig();
     }
 
     protected virtual void LoadPlayerConfig()

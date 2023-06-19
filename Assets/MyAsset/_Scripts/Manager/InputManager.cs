@@ -12,6 +12,7 @@ public class InputManager : MineBehaviour
     public float DirectionY => _directionY;
     [SerializeField] private bool _isJump = false;
     public bool IsJump => _isJump;
+    public void Jump() => _isJump = true;
 
     private void Awake()
     {
